@@ -9,13 +9,15 @@ import java.util.List;
 @Service
 public class ProductService implements ProductServiceInterface {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public List<Product> listProducts() {
-        List<Product> products = this.productRepository.findAll();
-        return products;
+        return this.productRepository.findAll();
     }
 
     @Override
