@@ -60,6 +60,8 @@ export class ProductListComponent implements AfterViewInit {
 */
 
 import { Component, OnInit } from '@angular/core';
+import { Product } from '../product';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -69,7 +71,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductListComponent implements OnInit {
 
+  products: Product[];
+
+  constructor(private productService: ProductService) {
+  }
+
   ngOnInit() {
+    //instance the products array
+    this.getAllProducts();
+
     // Verificar que estamos en el navegador
     if (typeof document !== 'undefined') {
       const exportButton = document.querySelector('.export-btn');
@@ -106,5 +116,23 @@ export class ProductListComponent implements OnInit {
       });
     }
   }
+
+  private getAllProducts() {
+    //consume data of oberservable (to suscribe)
+    this.productService.getAllProducts().subscribe(
+      (products) => {
+        this.products = products;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  /*
+  (products => {
+    this.products = products;
+  })
+  */
 }
 
